@@ -17,8 +17,6 @@ String getApiKey() {
     def propFile = rootProject.file("./local.properties")
     def properties = new Properties()
     properties.load(new FileInputStream(propFile))
-    def key = properties['API_KEY']
-    println(key)
     return properties['API_KEY']
 }
 
@@ -26,8 +24,6 @@ String getBaseUrl() {
     def propFile = rootProject.file("./local.properties")
     def properties = new Properties()
     properties.load(new FileInputStream(propFile))
-    def key = properties['BASE_URL']
-    println(key)
     return properties['BASE_URL']
 }
 
