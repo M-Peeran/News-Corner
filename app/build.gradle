@@ -13,18 +13,11 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
 }
 
-String getApiKey() {
+String getFieldValue(Object field) {
     def propFile = rootProject.file("./local.properties")
     def properties = new Properties()
     properties.load(new FileInputStream(propFile))
-    return properties['API_KEY']
-}
-
-String getBaseUrl() {
-    def propFile = rootProject.file("./local.properties")
-    def properties = new Properties()
-    properties.load(new FileInputStream(propFile))
-    return properties['BASE_URL']
+    return properties[field]
 }
 
 android {
@@ -49,8 +42,8 @@ android {
         }
 
         debug {
-            buildConfigField("String","API_KEY", getApiKey())
-            buildConfigField("String","BASE_URL", getBaseUrl())
+            buildConfigField("String","API_KEY", getFieldValue('API_KEY'))
+            buildConfigField("String","BASE_URL", getFieldValue('BASE_URL'))
         }
     }
     compileOptions {
