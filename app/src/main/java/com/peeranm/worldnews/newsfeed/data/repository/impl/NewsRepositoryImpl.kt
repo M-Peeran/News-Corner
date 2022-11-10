@@ -3,10 +3,8 @@ package com.peeranm.worldnews.newsfeed.data.repository.impl
 import androidx.paging.*
 import com.peeranm.worldnews.core.constants.Constants
 import com.peeranm.worldnews.core.database.NewsDatabase
-import com.peeranm.worldnews.favouritearticles.data.local.entity.FavArticle
 import com.peeranm.worldnews.newsfeed.data.remote.api.RetrofitInstance
 import com.peeranm.worldnews.newsfeed.data.remote.paging.TrendingNewsMediatorSource
-import com.peeranm.worldnews.newsfeed.data.remote.paging.SearchNewsPagingSource
 import com.peeranm.worldnews.newsfeed.data.repository.NewsRepository
 import com.peeranm.worldnews.newsfeed.model.Article
 import com.peeranm.worldnews.core.utils.ArticleMapper
@@ -39,41 +37,4 @@ class NewsRepositoryImpl(
         ).flow.map { pagedData -> pagedData.map { mapper.fromEntityToUiModel(it) } }
     }
 
-    override fun searchNews(searchQuery: String): Flow<PagingData<Article>> {
-        val pagingSource = SearchNewsPagingSource(
-            searchQuery = searchQuery,
-            retrofitInstance = retrofitInstance,
-            mapper = mapper
-        )
-        return Pager(
-            config = PagingConfig(
-                pageSize = Constants.PAGE_SIZE,
-                maxSize = Constants.MAX_ARTICLES_FOR_PAGINATION,
-                enablePlaceholders = false
-            ),
-            pagingSourceFactory = { pagingSource },
-        ).flow
-    }
-
-    override suspend fun getArticleById(id: Long): Article? {
-        return database.newsDao().getArticleById(id)?.let {
-            mapper.fromEntityToUiModel(it)
-        }
-    }
-
-    override fun getFavArticles(): Flow<List<FavArticle>> {
-        return database.favArticlesDao().getFavArticles()
-    }
-
-    override suspend fun insertFavArticle(favArticle: FavArticle) {
-        database.favArticlesDao().insert(favArticle)
-    }
-
-    override suspend fun deleteFavArticleById(id: String) {
-        database.favArticlesDao().deleteFavArticleById(id)
-    }
-
-    override suspend fun getFavArticleById(id: String): FavArticle? {
-        return database.favArticlesDao().getFavArticleById(id)
-    }
 }

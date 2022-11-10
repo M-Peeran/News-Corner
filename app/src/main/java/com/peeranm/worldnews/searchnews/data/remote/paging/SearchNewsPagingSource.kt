@@ -1,4 +1,4 @@
-package com.peeranm.worldnews.newsfeed.data.remote.paging
+package com.peeranm.worldnews.searchnews.data.remote.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

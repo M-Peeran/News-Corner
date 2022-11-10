@@ -5,11 +5,11 @@ import com.peeranm.worldnews.core.database.NewsDatabase
 import com.peeranm.worldnews.newsfeed.data.remote.api.RetrofitInstance
 import com.peeranm.worldnews.newsfeed.data.repository.NewsRepository
 import com.peeranm.worldnews.newsfeed.data.repository.impl.NewsRepositoryImpl
-import com.peeranm.worldnews.feature_news.use_cases.*
 import com.peeranm.worldnews.core.utils.ArticleMapper
-import com.peeranm.worldnews.favouritearticles.usecase.*
-import com.peeranm.worldnews.newsfeed.usecase.GetTrendingNewsUseCase
-import com.peeranm.worldnews.searchnews.usecase.SearchNewsUseCase
+import com.peeranm.worldnews.favouritearticles.data.repository.FavouriteArticleRepository
+import com.peeranm.worldnews.favouritearticles.data.repository.impl.FavouriteArticleRepositoryImpl
+import com.peeranm.worldnews.searchnews.data.repository.NewsSearchRepository
+import com.peeranm.worldnews.searchnews.data.repository.impl.NewsSearchRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,26 +28,33 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideNewsRepository(database: NewsDatabase, context: Application): NewsRepository {
-        return NewsRepositoryImpl(
-            database = database,
-            mapper = ArticleMapper(),
-            retrofitInstance = RetrofitInstance(context.applicationContext)
-        )
+    fun provideRetrofitInstance(app: Application): RetrofitInstance {
+        return RetrofitInstance(app.applicationContext)
     }
 
     @Singleton
     @Provides
-    fun provideArticleUseCases(repository: NewsRepository): ArticleUseCases {
-        return ArticleUseCases(
-            getTrendingNews = GetTrendingNewsUseCase(repository),
-            searchNews = SearchNewsUseCase(repository),
-            getArticle = GetArticleUseCase(repository),
-            insertFavArticle = InsertFavArticleUseCase(repository),
-            getFavArticle = GetFavArticleUseCase(repository),
-            getFavArticles = GetFavArticlesUseCase(repository),
-            deleteFavArticle = DeleteFavArticleUseCase(repository)
-        )
+    fun provideArticleMapper(): ArticleMapper {
+        return ArticleMapper()
     }
 
+    @Singleton
+    @Provides
+    fun provideNewsRepository(
+        database: NewsDatabase,
+        retrofitInstance: RetrofitInstance,
+        mapper: ArticleMapper
+    ): NewsRepository = NewsRepositoryImpl(database, retrofitInstance, mapper)
+
+    @Singleton
+    @Provides
+    fun provideNewsSearchRepository(
+        retrofitInstance: RetrofitInstance,
+        mapper: ArticleMapper
+    ): NewsSearchRepository = NewsSearchRepositoryImpl(retrofitInstance, mapper)
+
+    @Singleton
+    @Provides
+    fun provideFavouriteArticleRepository(database: NewsDatabase): FavouriteArticleRepository
+    = FavouriteArticleRepositoryImpl(database)
 }

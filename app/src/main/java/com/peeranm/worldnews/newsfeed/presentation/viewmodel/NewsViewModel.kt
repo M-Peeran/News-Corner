@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.peeranm.worldnews.newsfeed.model.Article
-import com.peeranm.worldnews.feature_news.use_cases.ArticleUseCases
+import com.peeranm.worldnews.newsfeed.usecase.GetTrendingNewsUseCase
 import com.peeranm.worldnews.newsfeed.utils.CountryCode
 import com.peeranm.worldnews.newsfeed.utils.NewsCategory
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,9 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 @OptIn(ExperimentalPagingApi::class)
-class NewsViewModel @Inject constructor(
-    private val articleUseCases: ArticleUseCases
-) : ViewModel() {
+class NewsViewModel @Inject constructor(private val getTrendingNews: GetTrendingNewsUseCase): ViewModel() {
 
     private val _articles = MutableStateFlow<PagingData<Article>>(PagingData.empty())
     val articles: StateFlow<PagingData<Article>> = _articles
@@ -26,7 +24,7 @@ class NewsViewModel @Inject constructor(
     init { getTrendingNews() }
 
     fun getTrendingNews() {
-        articleUseCases.getTrendingNews(selectedNewsCategory.categoryName, selectedCountryCode.code)
+        getTrendingNews(selectedNewsCategory.categoryName, selectedCountryCode.code)
             .cachedIn(viewModelScope)
             .onEach { _articles.value = it }
             .launchIn(viewModelScope)

@@ -7,7 +7,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.peeranm.worldnews.core.constants.Constants
 import com.peeranm.worldnews.newsfeed.model.Article
-import com.peeranm.worldnews.feature_news.use_cases.ArticleUseCases
+import com.peeranm.worldnews.searchnews.usecase.SearchNewsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchNewsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val articleUseCases: ArticleUseCases,
+    private val searchNews: SearchNewsUseCase,
 ) : ViewModel() {
 
     private val _searchResults = MutableStateFlow<PagingData<Article>>(PagingData.empty())
@@ -27,7 +27,7 @@ class SearchNewsViewModel @Inject constructor(
     init {
         val query = savedStateHandle.get<String>(Constants.SEARCH_QUERY)
         query?.let { searchQuery ->
-            articleUseCases.searchNews(searchQuery)
+            searchNews(searchQuery)
                 .cachedIn(viewModelScope)
                 .onEach { _searchResults.value = it }
                 .launchIn(viewModelScope)

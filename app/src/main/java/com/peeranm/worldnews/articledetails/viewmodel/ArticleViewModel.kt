@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peeranm.worldnews.core.constants.Constants
 import com.peeranm.worldnews.favouritearticles.data.local.entity.FavArticle
+import com.peeranm.worldnews.favouritearticles.usecase.InsertFavArticleUseCase
 import com.peeranm.worldnews.newsfeed.model.Article
-import com.peeranm.worldnews.feature_news.use_cases.ArticleUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ArticleViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val articleUseCases: ArticleUseCases
+    private val insertFavArticle: InsertFavArticleUseCase
 ) : ViewModel() {
 
     private val _message = MutableStateFlow("")
@@ -29,7 +29,7 @@ class ArticleViewModel @Inject constructor(
             return
         }
         viewModelScope.launch {
-            articleUseCases.insertFavArticle(FavArticle(
+            insertFavArticle(FavArticle(
                 title = article.title,
                 url = article.url,
                 author = article.author,
