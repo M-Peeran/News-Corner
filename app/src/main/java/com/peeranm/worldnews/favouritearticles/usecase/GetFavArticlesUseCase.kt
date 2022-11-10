@@ -1,5 +1,4 @@
-package com.peeranm.worldnews.feature_news.use_cases
-
+package com.peeranm.worldnews.favouritearticles.usecase
 
 import com.peeranm.worldnews.favouritearticles.data.local.entity.FavArticle
 import com.peeranm.worldnews.newsfeed.data.repository.NewsRepository

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/newsFragment"
-        android:name="com.peeranm.worldnews.feature_news.presentation.news_feed.NewsFragment"
+        android:name="com.peeranm.worldnews.newsfeed.presentation.fragment.NewsFragment"
         android:label="fragment_news"
         tools:layout="@layout/fragment_news" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/searchResultFragment"
-        android:name="com.peeranm.worldnews.feature_news.presentation.search_result.SearchResultFragment"
+        android:name="com.peeranm.worldnews.searchnews.fragment.SearchResultFragment"
         android:label="fragment_search_result"
         tools:layout="@layout/fragment_search_result" >
         <argument
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/articleFragment"
-        android:name="com.peeranm.worldnews.feature_news.presentation.article.ArticleFragment"
+        android:name="com.peeranm.worldnews.articledetails.fragment.ArticleFragment"
         android:label="ArticleFragment"
         tools:layout="@layout/fragment_article" >
         <argument
@@ -51,7 +51,7 @@
     </fragment>
     <fragment
         android:id="@+id/favouriteArticlesFragment"
-        android:name="com.peeranm.worldnews.feature_news.presentation.favourite_articles.FavouriteArticlesFragment"
+        android:name="com.peeranm.worldnews.favouritearticles.presentation.fragment.FavouriteArticlesFragment"
         android:label="FavouriteArticlesFragment"
         tools:layout="@layout/fragment_favourite_articles" >
         <action
