@@ -7,12 +7,12 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
-        android:name="com.peeranm.worldnews.di.MyApplication"
+        android:name="com.peeranm.worldnews.core.di.MyApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.WorldNews">
         <activity
-            android:name=".feature_news.presentation.MainActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

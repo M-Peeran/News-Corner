@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature_news.presentation.search_result.SearchResultFragment">
+    tools:context=".searchnews.fragment.SearchResultFragment">
 
 
     <androidx.recyclerview.widget.RecyclerView
