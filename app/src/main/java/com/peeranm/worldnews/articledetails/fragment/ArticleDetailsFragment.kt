@@ -42,7 +42,9 @@ class ArticleDetailsFragment : Fragment() {
         binding.loadArticle()
         binding.handleOnFabFavouriteClick()
 
-        collectWithLifecycle(viewModel.message) { message -> showToast(message) }
+        collectWithLifecycle(viewModel.message) { message ->
+            if (message.isNotEmpty()) showToast(message)
+        }
     }
 
     private fun FragmentArticleDetailsBinding.toggleFabFavouriteArticle(hideNow: Boolean = false) {
