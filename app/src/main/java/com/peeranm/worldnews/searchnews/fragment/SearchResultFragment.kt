@@ -57,7 +57,7 @@ class SearchResultFragment : Fragment(), OnItemClickListener<Article>, ArticleLo
 
     override fun onItemClick(view: View?, data: Article, position: Int) {
         findNavController().navigate(
-            SearchResultFragmentDirections.actionSearchResultFragmentToArticleFragment(article = data)
+            SearchResultFragmentDirections.actionSearchResultFragmentToArticleDetailsFragment(article = data)
         )
     }
 

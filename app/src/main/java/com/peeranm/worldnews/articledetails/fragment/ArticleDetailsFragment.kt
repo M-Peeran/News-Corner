@@ -10,26 +10,26 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.peeranm.worldnews.core.utils.collectWithLifecycle
 import com.peeranm.worldnews.core.utils.showToast
-import com.peeranm.worldnews.databinding.FragmentArticleBinding
 import com.peeranm.worldnews.articledetails.viewmodel.ArticleViewModel
+import com.peeranm.worldnews.databinding.FragmentArticleDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class ArticleFragment : Fragment() {
+class ArticleDetailsFragment : Fragment() {
 
-    private var _binding: FragmentArticleBinding? = null
-    private val binding: FragmentArticleBinding
+    private var _binding: FragmentArticleDetailsBinding? = null
+    private val binding: FragmentArticleDetailsBinding
     get() = _binding!!
 
     private val viewModel: ArticleViewModel by viewModels()
-    private val args: ArticleFragmentArgs by navArgs()
+    private val args: ArticleDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentArticleBinding.inflate(
+        _binding = FragmentArticleDetailsBinding.inflate(
             inflater,
             container,
             false
@@ -45,11 +45,11 @@ class ArticleFragment : Fragment() {
         collectWithLifecycle(viewModel.message) { message -> showToast(message) }
     }
 
-    private fun FragmentArticleBinding.toggleFabFavouriteArticle(hideNow: Boolean = false) {
+    private fun FragmentArticleDetailsBinding.toggleFabFavouriteArticle(hideNow: Boolean = false) {
         fabFavouriteArticle.visibility = if (hideNow) View.GONE else View.VISIBLE
     }
 
-    private fun FragmentArticleBinding.loadArticle() {
+    private fun FragmentArticleDetailsBinding.loadArticle() {
         val article = args.article
         val articleUrl = args.articleUrl
         val isFavouriteArticle = args.isFavourite
@@ -72,7 +72,7 @@ class ArticleFragment : Fragment() {
         }
     }
 
-    private fun FragmentArticleBinding.handleOnFabFavouriteClick() {
+    private fun FragmentArticleDetailsBinding.handleOnFabFavouriteClick() {
         fabFavouriteArticle.setOnClickListener {
             binding.toggleFabFavouriteArticle(true)
             viewModel.saveArticle()

@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.peeranm.worldnews.R
 import com.peeranm.worldnews.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
     private fun ActivityMainBinding.toggleBottomNavBar() {
         navHost.findNavController().addOnDestinationChangedListener { navController, destination, bundle ->
             when (destination.id) {
-                R.id.articleFragment -> bottomNavigationView.visibility = View.GONE
+                R.id.articleDetailsFragment -> bottomNavigationView.visibility = View.GONE
                 else -> bottomNavigationView.visibility = View.VISIBLE
             }
         }

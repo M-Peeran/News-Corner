@@ -63,7 +63,7 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
 
     override fun onItemClick(view: View?, data: FavArticle, position: Int) {
         findNavController().navigate(
-            FavouriteArticlesFragmentDirections.actionFavouriteArticlesFragmentToArticleFragment(
+            FavouriteArticlesFragmentDirections.actionFavouriteArticlesFragmentToArticleDetailsFragment(
                 articleUrl = data.url,
                 isFavourite = true
             )

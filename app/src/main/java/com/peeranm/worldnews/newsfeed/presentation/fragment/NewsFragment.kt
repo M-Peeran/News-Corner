@@ -103,7 +103,7 @@ class NewsFragment : Fragment(),
 
     override fun onItemClick(view: View?, data: Article, position: Int) {
         findNavController().navigate(
-            NewsFragmentDirections.actionNewsFragmentToArticleFragment(article = data)
+            NewsFragmentDirections.actionNewsFragmentToArticleDetailsFragment(article = data)
         )
     }
 
