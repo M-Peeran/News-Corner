@@ -53,3 +53,17 @@ fun <T> LifecycleOwner.collectLatestWithLifecycle(flow: Flow<T>, collect: suspen
             flow.collectLatest(collect)
         }
     }
+
+fun String.getDateLabel(): String {
+    if (isEmpty()) return this
+    this.split('T')
+        .first()
+        .split('-')
+        .let { chunks ->
+            return buildString {
+                append(Months.values().find { it.number == chunks[1] }?.name)
+                append(" ${chunks[2]}, ")
+                append(chunks[0])
+            }
+        }
+}
