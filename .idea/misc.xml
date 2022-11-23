@@ -14,19 +14,23 @@
         <entry key="..\:/Users/Peeran M/StudioProjects/WorldNews/app/src/main/res/layout/paging_loading_item.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/Peeran M/StudioProjects/WorldNews/app/src/main/res/menu/bottom_nav_menu.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/Peeran M/StudioProjects/WorldNews/app/src/main/res/menu/options_menu.xml" value="0.22135416666666666" />
+        <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/drawable/border_square.xml" value="0.154" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/drawable/ic_favorite.xml" value="0.154" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/drawable/ic_filter_list.xml" value="0.154" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/drawable/ic_launcher_background.xml" value="0.154" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/drawable/ic_search.xml" value="0.154" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/drawable/ic_tune.xml" value="0.154" />
+        <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/font/inter_medium.xml" value="0.28" />
+        <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/font/inter_semibold.xml" value="0.28" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/activity_main.xml" value="0.24010416666666667" />
-        <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/article_item.xml" value="0.4" />
+        <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/article_item.xml" value="0.536" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/country_item.xml" value="0.6" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/dialog_news_category.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/fragment_article.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/fragment_favourite_articles.xml" value="0.253125" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/fragment_news.xml" value="0.24010416666666667" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/fragment_search_news.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/fragment_search_result.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/layout/paging_loading_item.xml" value="0.536" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/menu/bottom_nav_menu.xml" value="0.253125" />
         <entry key="..\:/Users/Peeran PC/AndroidStudioProjects/WorldNews/app/src/main/res/menu/options_menu.xml" value="0.4" />

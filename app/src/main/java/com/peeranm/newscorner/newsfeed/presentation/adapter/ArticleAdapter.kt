@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.peeranm.newscorner.databinding.ArticleItemBinding
 import com.peeranm.newscorner.core.utils.OnItemClickListener
+import com.peeranm.newscorner.core.utils.getDateLabel
 import com.peeranm.newscorner.newsfeed.model.Article
 
 
@@ -29,7 +30,7 @@ class ArticleAdapter(listener: OnItemClickListener<Article>)
                 textTitle.text = article.title
                 textDescription.text = article.description
                 textSource.text = article.source
-                textPublishedAt.text = article.publishedAt
+                textPublishedAt.text = article.publishedAt.getDateLabel()
                 imageArticleImage.load(article.urlToImage)
             }
         }

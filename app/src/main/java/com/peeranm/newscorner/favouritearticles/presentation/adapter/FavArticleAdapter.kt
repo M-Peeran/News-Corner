@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.peeranm.newscorner.core.utils.OnItemClickListener
+import com.peeranm.newscorner.core.utils.getDateLabel
 import com.peeranm.newscorner.databinding.ArticleItemBinding
 import com.peeranm.newscorner.favouritearticles.data.local.entity.FavArticle
 
@@ -37,7 +38,7 @@ class FavArticleAdapter(listener: OnItemClickListener<FavArticle>)
                 textTitle.text = favArticle.title
                 textDescription.text = favArticle.description
                 textSource.text = favArticle.source
-                textPublishedAt.text = favArticle.publishedAt
+                textPublishedAt.text = favArticle.publishedAt.getDateLabel()
                 imageArticleImage.load(favArticle.urlToImage)
             }
         }
