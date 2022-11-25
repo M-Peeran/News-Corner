@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WorldNews</string>
+    <string name="app_name">News Corner</string>
     <string name="search">Search</string>
     <string name="change_country">Change Country</string>
     <string name="headlines">Headlines</string>
@@ -9,4 +9,7 @@
     <string name="retry">Retry</string>
     <string name="news_category">News Category</string>
     <string name="general">General</string>
+    <string name="time_icon">Time icon</string>
+    <string name="article_headline">From %s</string>
+    <string name="favourite_articles">Favourite Articles</string>
 </resources>
