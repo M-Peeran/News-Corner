@@ -10,4 +10,6 @@
     <string name="news_category">News Category</string>
     <string name="general">General</string>
     <string name="time_icon">Time icon</string>
+    <string name="article_headline">From %s</string>
+    <string name="favourite_articles">Favourite Articles</string>
 </resources>

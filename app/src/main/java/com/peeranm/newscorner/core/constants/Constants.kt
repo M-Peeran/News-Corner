@@ -12,4 +12,5 @@ object Constants {
     const val ARG_COUNTRY_DIALOG_RESULT = "countryDialogResult"
     const val MESSAGE_SOMETHING_WENT_WRONG = "Something went wrong. Please try again later."
     const val MESSAGE_NO_INTERNET_CONNECTION = "Internet connection is not available! Please check your connection."
+    const val SOURCE_UNKNOWN = "Unknown Source"
 }

@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.peeranm.newscorner.R
 import com.peeranm.newscorner.core.utils.collectWithLifecycle
 import com.peeranm.newscorner.core.utils.handleOnBackPressed
 import com.peeranm.newscorner.databinding.FragmentFavouriteArticlesBinding
@@ -16,6 +17,7 @@ import com.peeranm.newscorner.favouritearticles.data.local.entity.FavArticle
 import com.peeranm.newscorner.favouritearticles.presentation.viewmodel.FavouriteArticlesViewModel
 import com.peeranm.newscorner.favouritearticles.presentation.adapter.FavArticleAdapter
 import com.peeranm.newscorner.core.utils.OnItemClickListener
+import com.peeranm.newscorner.core.utils.setActionbarTitle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,6 +46,7 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setActionbarTitle(R.string.favourite_articles)
         handleOnBackPressed()
         binding.bindList()
 
@@ -65,6 +68,7 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
         findNavController().navigate(
             FavouriteArticlesFragmentDirections.actionFavouriteArticlesFragmentToArticleDetailsFragment(
                 articleUrl = data.url,
+                source = data.source,
                 isFavourite = true
             )
         )

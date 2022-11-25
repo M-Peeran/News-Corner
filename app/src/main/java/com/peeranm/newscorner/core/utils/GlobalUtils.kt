@@ -17,8 +17,8 @@ import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
 import org.json.JSONObject
 
-fun Fragment.setActionbarTitle(@StringRes stringRes: Int) {
-    (requireActivity() as AppCompatActivity).supportActionBar?.title = getString(stringRes)
+fun Fragment.setActionbarTitle(@StringRes stringRes: Int, optionalString: String = "") {
+    (requireActivity() as AppCompatActivity).supportActionBar?.title = getString(stringRes, optionalString)
 }
 
 fun Fragment.showToast(message: String, duration: Int = Toast.LENGTH_SHORT) {

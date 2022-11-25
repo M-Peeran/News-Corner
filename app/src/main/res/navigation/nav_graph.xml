@@ -48,6 +48,11 @@
             android:defaultValue="@null"
             app:argType="com.peeranm.newscorner.newsfeed.model.Article"
             app:nullable="true" />
+        <argument
+            android:name="source"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
     </fragment>
     <fragment
         android:id="@+id/favouriteArticlesFragment"

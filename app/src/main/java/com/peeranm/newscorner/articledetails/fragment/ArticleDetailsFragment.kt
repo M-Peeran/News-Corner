@@ -8,9 +8,12 @@ import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
+import com.peeranm.newscorner.R
 import com.peeranm.newscorner.core.utils.collectWithLifecycle
 import com.peeranm.newscorner.core.utils.showToast
 import com.peeranm.newscorner.articledetails.viewmodel.ArticleViewModel
+import com.peeranm.newscorner.core.constants.Constants
+import com.peeranm.newscorner.core.utils.setActionbarTitle
 import com.peeranm.newscorner.databinding.FragmentArticleDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,12 +42,18 @@ class ArticleDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setActionbarTitle(R.string.article_headline, getSource())
         binding.loadArticle()
         binding.handleOnFabFavouriteClick()
 
         collectWithLifecycle(viewModel.message) { message ->
             if (message.isNotEmpty()) showToast(message)
         }
+    }
+
+    private fun getSource(): String {
+        return if (args.isFavourite) args.source ?: Constants.SOURCE_UNKNOWN
+        else args.article?.source ?: Constants.SOURCE_UNKNOWN
     }
 
     private fun FragmentArticleDetailsBinding.toggleFabFavouriteArticle(hideNow: Boolean = false) {
