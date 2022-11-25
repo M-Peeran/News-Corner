@@ -1,2 +1,2 @@
-# WorldNews
+# News Corner
 Get latest news!
