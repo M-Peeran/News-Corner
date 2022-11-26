@@ -15,6 +15,7 @@ class ConnectionLiveData(context: Context): LiveData<Boolean>() {
     private val validNetworks: MutableSet<Network> = HashSet()
 
     override fun onActive() {
+        postValue(false)
         networkCallback = createNetworkCallback()
         val networkRequest = NetworkRequest.Builder()
             .addCapability(NET_CAPABILITY_INTERNET)

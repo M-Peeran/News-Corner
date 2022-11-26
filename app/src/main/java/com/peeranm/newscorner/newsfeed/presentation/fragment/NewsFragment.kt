@@ -13,10 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.peeranm.newscorner.R
 import com.peeranm.newscorner.core.constants.Constants
-import com.peeranm.newscorner.core.utils.OnItemClickListener
-import com.peeranm.newscorner.core.utils.collectWithLifecycle
-import com.peeranm.newscorner.core.utils.handleOnBackPressed
-import com.peeranm.newscorner.core.utils.setActionbarTitle
+import com.peeranm.newscorner.core.utils.*
 import com.peeranm.newscorner.databinding.FragmentNewsBinding
 import com.peeranm.newscorner.newsfeed.presentation.viewmodel.NewsViewModel
 import com.peeranm.newscorner.newsfeed.model.Article
@@ -42,6 +39,8 @@ class NewsFragment : Fragment(),
     private var adapter: ArticleAdapter? = null
     private var articleLoadStateAdapter: ArticleLoadStateAdapter? = null
     private var categoryAdapter: ArrayAdapter<NewsCategory>? = null
+
+    private var selectedCategory: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -86,17 +85,11 @@ class NewsFragment : Fragment(),
 
     private fun observeConnectionState() {
         viewModel.connectionLiveData.observe(viewLifecycleOwner) { isConnectionAvailable ->
-            if (!isConnectionAvailable) {
-                binding.toggleNoConnectionLayoutVisibility(true)
-                return@observe
+            binding.toggleNoConnectionLayoutVisibility(!isConnectionAvailable)
+            when {
+                isConnectionAvailable && adapter!!.itemCount <= 0 -> viewModel.getTrendingNews()
             }
-            binding.toggleNoConnectionLayoutVisibility(false)
-            fetchNewsForFirstTime()
         }
-    }
-
-    private fun fetchNewsForFirstTime() {
-        adapter?.let { if (it.itemCount <= 0) viewModel.getTrendingNews() }
     }
 
     private fun FragmentNewsBinding.toggleNoConnectionLayoutVisibility(showNow: Boolean = false) {
@@ -123,17 +116,27 @@ class NewsFragment : Fragment(),
     }
 
     override fun onItemClick(view: View?, data: Article, position: Int) {
+        if (viewModel.connectionLiveData.value == false) {
+            showToast(Constants.MESSAGE_NO_INTERNET_CONNECTION)
+            return
+        }
         findNavController().navigate(
             NewsFragmentDirections.actionNewsFragmentToArticleDetailsFragment(article = data)
         )
     }
 
     override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        if (viewModel.connectionLiveData.value == false) {
+            binding.acTextNewsCategory.setText(selectedCategory, false)
+            showToast(Constants.MESSAGE_NO_INTERNET_CONNECTION)
+            return
+        }
         val category = categoryAdapter?.getItem(position)
         category?.let {
             adapter?.submitData(lifecycle, PagingData.empty())
             viewModel.setNewsCategory(it)
             viewModel.getTrendingNews()
+            selectedCategory = category.name
         }
     }
 
@@ -163,12 +166,16 @@ class NewsFragment : Fragment(),
 
     private fun setFragmentResultListener() {
         childFragmentManager.setFragmentResultListener(Constants.KEY_COUNTRY_DIALOG_RESULT_LISTENER, this) { requestKey, bundle ->
-            if (requestKey == Constants.KEY_COUNTRY_DIALOG_RESULT_LISTENER) {
-                val countryCode = bundle.get(Constants.ARG_COUNTRY_DIALOG_RESULT) as? CountryCode
-                if (countryCode != null) {
-                    adapter?.submitData(lifecycle, PagingData.empty())
-                    viewModel.setCountryCode(countryCode)
-                    viewModel.getTrendingNews()
+            when (requestKey) {
+                Constants.KEY_COUNTRY_DIALOG_RESULT_LISTENER -> {
+                    if (viewModel.connectionLiveData.value == true) {
+                        val countryCode = bundle.get(Constants.ARG_COUNTRY_DIALOG_RESULT) as? CountryCode
+                        if (countryCode != null) {
+                            adapter?.submitData(lifecycle, PagingData.empty())
+                            viewModel.setCountryCode(countryCode)
+                            viewModel.getTrendingNews()
+                        }
+                    } else showToast(Constants.MESSAGE_NO_INTERNET_CONNECTION)
                 }
             }
         }
