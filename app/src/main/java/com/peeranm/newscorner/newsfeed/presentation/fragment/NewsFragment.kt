@@ -59,6 +59,7 @@ class NewsFragment : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentResultListener()
+        viewModel.initializeConnectionLiveData(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,6 +68,7 @@ class NewsFragment : Fragment(),
         handleOnBackPressed()
         setActionbarTitle(R.string.headlines)
         binding.bindList()
+        observeConnectionState()
 
         collectWithLifecycle(viewModel.articles) {
             adapter?.submitData(it)
@@ -80,6 +82,25 @@ class NewsFragment : Fragment(),
 
     override fun onRetry() {
         adapter?.retry()
+    }
+
+    private fun observeConnectionState() {
+        viewModel.connectionLiveData.observe(viewLifecycleOwner) { isConnectionAvailable ->
+            if (!isConnectionAvailable) {
+                binding.toggleNoConnectionLayoutVisibility(true)
+                return@observe
+            }
+            binding.toggleNoConnectionLayoutVisibility(false)
+            fetchNewsForFirstTime()
+        }
+    }
+
+    private fun fetchNewsForFirstTime() {
+        adapter?.let { if (it.itemCount <= 0) viewModel.getTrendingNews() }
+    }
+
+    private fun FragmentNewsBinding.toggleNoConnectionLayoutVisibility(showNow: Boolean = false) {
+        noConnectionLayout.root.visibility = if (showNow) View.VISIBLE else View.GONE
     }
 
     private fun FragmentNewsBinding.bindList() {

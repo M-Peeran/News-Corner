@@ -6,7 +6,13 @@
     android:orientation="vertical"
     tools:context=".newsfeed.presentation.fragment.NewsFragment">
 
+    <include
+        android:id="@+id/noConnectionLayout"
+        layout="@layout/no_connection_message_layout"
+        android:visibility="gone" />
+
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tiLayoutNewsCategories"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
