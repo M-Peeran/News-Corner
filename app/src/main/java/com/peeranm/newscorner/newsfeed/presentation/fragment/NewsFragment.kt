@@ -154,6 +154,10 @@ class NewsFragment : Fragment(),
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
+        if (viewModel.connectionLiveData.value == false) {
+            showToast(Constants.MESSAGE_NO_INTERNET_CONNECTION)
+            return false
+        }
         if (!query.isNullOrBlank()) {
             findNavController().navigate(
                 NewsFragmentDirections.actionNewsFragmentToSearchResultFragment(query)

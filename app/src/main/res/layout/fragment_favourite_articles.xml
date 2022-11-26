@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/noConnectionLayout"
+        layout="@layout/no_connection_message_layout"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listFavouriteArticles"
@@ -16,4 +23,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-</FrameLayout>
+
+    <TextView
+        android:id="@+id/textNoArticlesFound"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fontFamily="@font/inter_medium"
+        android:gravity="center"
+        android:text="@string/no_favourite_articles_found"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        tools:visibility="gone" />
+</LinearLayout>
