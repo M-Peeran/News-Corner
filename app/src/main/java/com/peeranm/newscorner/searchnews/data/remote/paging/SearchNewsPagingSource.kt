@@ -9,7 +9,6 @@ import com.peeranm.newscorner.newsfeed.data.remote.dto.ErrorDto
 import com.peeranm.newscorner.newsfeed.model.Article
 import com.peeranm.newscorner.core.utils.ArticleMapper
 import retrofit2.HttpException
-import java.io.IOException
 
 class SearchNewsPagingSource(
     private val searchQuery: String,
@@ -46,15 +45,12 @@ class SearchNewsPagingSource(
             }
             LoadResult.Error(Exception("Received failed response"))
         } catch (exception: Exception) {
-            val message = when (exception) {
-                is HttpException -> {
+            LoadResult.Error(
+                if (exception is HttpException) {
                     val errorObject = exception.response()?.errorBody()?.getResponseObject<ErrorDto>()
-                    errorObject?.message ?: Constants.MESSAGE_SOMETHING_WENT_WRONG
-                }
-                is IOException -> Constants.MESSAGE_NO_INTERNET_CONNECTION
-                else -> Constants.MESSAGE_SOMETHING_WENT_WRONG
-            }
-            LoadResult.Error(Exception(message, exception))
+                    Exception(errorObject?.message ?: Constants.MESSAGE_SOMETHING_WENT_WRONG)
+                } else exception
+            )
         }
     }
 }

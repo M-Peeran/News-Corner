@@ -10,14 +10,12 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.peeranm.newscorner.R
-import com.peeranm.newscorner.core.utils.collectWithLifecycle
-import com.peeranm.newscorner.core.utils.handleOnBackPressed
+import com.peeranm.newscorner.core.constants.Constants
+import com.peeranm.newscorner.core.utils.*
 import com.peeranm.newscorner.databinding.FragmentFavouriteArticlesBinding
 import com.peeranm.newscorner.favouritearticles.data.local.entity.FavArticle
 import com.peeranm.newscorner.favouritearticles.presentation.viewmodel.FavouriteArticlesViewModel
 import com.peeranm.newscorner.favouritearticles.presentation.adapter.FavArticleAdapter
-import com.peeranm.newscorner.core.utils.OnItemClickListener
-import com.peeranm.newscorner.core.utils.setActionbarTitle
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,6 +28,11 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
     private val viewModel: FavouriteArticlesViewModel by viewModels()
 
     private var adapter: FavArticleAdapter? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.initializeConnectionLiveData(requireContext())
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,11 +52,32 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
         setActionbarTitle(R.string.favourite_articles)
         handleOnBackPressed()
         binding.bindList()
+        observeConnectionState()
 
         collectWithLifecycle(viewModel.favArticles) {
+            if (it.isEmpty()) {
+                binding.showNoArticlesFoundMessage()
+                return@collectWithLifecycle
+            }
             adapter?.submitList(it)
         }
 
+    }
+
+    private fun observeConnectionState() {
+        viewModel.connectionLiveData.observe(viewLifecycleOwner) { isConnectionAvailable ->
+            binding.toggleNoConnectionLayoutVisibility(!isConnectionAvailable)
+        }
+    }
+
+    private fun FragmentFavouriteArticlesBinding.showNoArticlesFoundMessage() {
+        noConnectionLayout.root.visibility = View.GONE
+        listFavouriteArticles.visibility = View.GONE
+        textNoArticlesFound.visibility = View.VISIBLE
+    }
+
+    private fun FragmentFavouriteArticlesBinding.toggleNoConnectionLayoutVisibility(showNow: Boolean = false) {
+        noConnectionLayout.root.visibility = if (showNow) View.VISIBLE else View.GONE
     }
 
     private fun FragmentFavouriteArticlesBinding.bindList() {
@@ -65,6 +89,10 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
     }
 
     override fun onItemClick(view: View?, data: FavArticle, position: Int) {
+        if (viewModel.connectionLiveData.value == false) {
+            showToast(Constants.MESSAGE_NO_INTERNET_CONNECTION)
+            return
+        }
         findNavController().navigate(
             FavouriteArticlesFragmentDirections.actionFavouriteArticlesFragmentToArticleDetailsFragment(
                 articleUrl = data.url,
