@@ -44,7 +44,7 @@ class ArticleDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setActionbarTitle(R.string.article_headline, getSource())
+        setActionbarTitle(R.string.article_headline, viewModel.articleFrom)
         binding.handleOnFabFavouriteClick()
 
         collectWithLifecycle(viewModel.message) { message ->
@@ -56,10 +56,6 @@ class ArticleDetailsFragment : Fragment() {
         }
 
         binding.loadArticle(viewModel.articleUrl)
-    }
-
-    private fun getSource(): String {
-        return with(args) { article?.source ?: favArticle?.source ?: "" }
     }
 
     private fun FragmentArticleDetailsBinding.loadArticle(url: String) {

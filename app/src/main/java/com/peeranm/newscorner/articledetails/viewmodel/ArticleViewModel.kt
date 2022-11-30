@@ -26,14 +26,22 @@ class ArticleViewModel @Inject constructor(
     val isFavourite = _isFavourite.asStateFlow()
 
     var articleUrl = ""
+    var articleFrom = ""
 
     init {
         val article = savedStateHandle.get<Article>(Constants.ARG_ARTICLE)
         val favArticle = savedStateHandle.get<FavArticle>(Constants.ARG_FAV_ARTICLE)
-        val isFavourite = article == null && favArticle != null
-
-        if (isFavourite) _isFavourite.value = isFavourite
-        articleUrl = article?.url ?: favArticle?.url ?: ""
+        when {
+            favArticle != null -> {
+                _isFavourite.value = true
+                articleFrom = favArticle.source
+                articleUrl = favArticle.url
+            }
+            article != null -> {
+                articleFrom = article.source
+                articleUrl = article.url
+            }
+        }
     }
 
     fun saveArticle() {
