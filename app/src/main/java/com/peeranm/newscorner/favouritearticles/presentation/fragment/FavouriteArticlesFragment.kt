@@ -55,10 +55,7 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
         observeConnectionState()
 
         collectWithLifecycle(viewModel.favArticles) {
-            if (it.isEmpty()) {
-                binding.showNoArticlesFoundMessage()
-                return@collectWithLifecycle
-            }
+            binding.toggleNoArticlesFoundMessageVisibility(it.isEmpty())
             adapter?.submitList(it)
         }
 
@@ -70,10 +67,14 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
         }
     }
 
-    private fun FragmentFavouriteArticlesBinding.showNoArticlesFoundMessage() {
-        noConnectionLayout.root.visibility = View.GONE
-        listFavouriteArticles.visibility = View.GONE
-        textNoArticlesFound.visibility = View.VISIBLE
+    private fun FragmentFavouriteArticlesBinding.toggleNoArticlesFoundMessageVisibility(showNow: Boolean = true) {
+        if (showNow) {
+            listFavouriteArticles.visibility = View.GONE
+            textNoArticlesFound.visibility = View.VISIBLE
+        } else {
+            textNoArticlesFound.visibility = View.GONE
+            listFavouriteArticles.visibility = View.VISIBLE
+        }
     }
 
     private fun FragmentFavouriteArticlesBinding.toggleNoConnectionLayoutVisibility(showNow: Boolean = false) {
