@@ -96,9 +96,7 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
         }
         findNavController().navigate(
             FavouriteArticlesFragmentDirections.actionFavouriteArticlesFragmentToArticleDetailsFragment(
-                articleUrl = data.url,
-                source = data.source,
-                isFavourite = true
+                favArticle = data
             )
         )
     }
