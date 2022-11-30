@@ -5,14 +5,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.peeranm.newscorner.core.utils.ConnectionLiveData
 import com.peeranm.newscorner.favouritearticles.data.local.entity.FavArticle
+import com.peeranm.newscorner.favouritearticles.usecase.DeleteFavArticleUseCase
 import com.peeranm.newscorner.favouritearticles.usecase.GetFavArticlesUseCase
+import com.peeranm.newscorner.favouritearticles.usecase.InsertFavArticleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FavouriteArticlesViewModel @Inject constructor(
-    getFavouriteArticles: GetFavArticlesUseCase
+    private val getFavouriteArticles: GetFavArticlesUseCase,
+    private val deleteFavArticle: DeleteFavArticleUseCase,
+    private val insertFavArticle: InsertFavArticleUseCase
 ) : ViewModel() {
 
     private lateinit var _connectionLiveData: ConnectionLiveData
@@ -24,9 +29,16 @@ class FavouriteArticlesViewModel @Inject constructor(
         _connectionLiveData = ConnectionLiveData(context)
     }
 
-
     val favArticles: StateFlow<List<FavArticle>>
     = getFavouriteArticles.invoke().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+
+    fun removeFavArticle(id: String) {
+        viewModelScope.launch { deleteFavArticle(id) }
+    }
+
+    fun addFavouriteArticle(favArticle: FavArticle) {
+        viewModelScope.launch { insertFavArticle(favArticle) }
+    }
 
 
 }

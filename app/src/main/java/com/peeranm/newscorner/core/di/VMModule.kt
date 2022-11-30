@@ -1,10 +1,7 @@
 package com.peeranm.newscorner.core.di
 
 import com.peeranm.newscorner.favouritearticles.data.repository.FavouriteArticleRepository
-import com.peeranm.newscorner.favouritearticles.usecase.DeleteFavArticleUseCase
-import com.peeranm.newscorner.favouritearticles.usecase.GetFavArticleUseCase
-import com.peeranm.newscorner.favouritearticles.usecase.GetFavArticlesUseCase
-import com.peeranm.newscorner.favouritearticles.usecase.InsertFavArticleUseCase
+import com.peeranm.newscorner.favouritearticles.usecase.*
 import com.peeranm.newscorner.newsfeed.data.repository.NewsRepository
 import com.peeranm.newscorner.newsfeed.usecase.GetTrendingNewsUseCase
 import com.peeranm.newscorner.searchnews.data.repository.NewsSearchRepository
@@ -53,6 +50,12 @@ class VMModule {
     @Provides
     fun provideDeleteFavArticleUseCase(repository: FavouriteArticleRepository): DeleteFavArticleUseCase {
         return DeleteFavArticleUseCase(repository)
+    }
+
+    @ViewModelScoped
+    @Provides
+    fun provideIsArticleFavouriteUseCase(repository: FavouriteArticleRepository): IsArticleFavouriteUseCase {
+        return IsArticleFavouriteUseCase(repository)
     }
 
 }
