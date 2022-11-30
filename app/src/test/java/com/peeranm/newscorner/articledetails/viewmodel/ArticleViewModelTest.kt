@@ -2,15 +2,14 @@ package com.peeranm.newscorner.articledetails.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
-import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
 import com.peeranm.newscorner.utils.TestDispatcherRule
 import com.peeranm.newscorner.core.constants.Constants
-import com.peeranm.newscorner.favouritearticles.data.local.entity.FavArticle
 import com.peeranm.newscorner.favouritearticles.data.repository.FavouriteArticleRepository
 import com.peeranm.newscorner.favouritearticles.usecase.DeleteFavArticleUseCase
 import com.peeranm.newscorner.favouritearticles.usecase.InsertFavArticleUseCase
 import com.peeranm.newscorner.favouritearticles.usecase.IsArticleFavouriteUseCase
+import com.peeranm.newscorner.utils.getFavArticle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
 import org.junit.Rule
@@ -57,15 +56,4 @@ class ArticleViewModelTest {
             DeleteFavArticleUseCase(repository)
         )
     }
-
-    private fun getFavArticle() = FavArticle(
-        title = "Newton will make upcoming engineers cry!",
-        description = "Gravity made me famous, what you want else in life?",
-        author = "Einstein",
-        content = "Gravity made me famous, what you want else in life?",
-        publishedAt = "2022-01-01T17:24:04Z",
-        source = "Einstein's Personal Journal",
-        url = "Newton will kill me if I publish this...",
-        urlToImage = "Ask Newton"
-    )
 }
