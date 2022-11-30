@@ -78,7 +78,7 @@ class ArticleDetailsFragment : Fragment() {
 
     private fun FragmentArticleDetailsBinding.handleOnFabFavouriteClick() {
         fabFavouriteArticle.setOnClickListener {
-            viewModel.saveArticle()
+            viewModel.saveOrDeleteArticle()
         }
     }
 
