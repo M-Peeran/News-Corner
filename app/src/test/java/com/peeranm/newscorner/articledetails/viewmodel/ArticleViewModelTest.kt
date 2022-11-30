@@ -12,10 +12,13 @@ import com.peeranm.newscorner.favouritearticles.usecase.IsArticleFavouriteUseCas
 import com.peeranm.newscorner.utils.getArticle
 import com.peeranm.newscorner.utils.getFavArticle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
+import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -59,6 +62,28 @@ class ArticleViewModelTest {
         )
         // Then
         assertThat(viewModel.isFavourite.value).isFalse()
+    }
+
+    @Test
+    fun `received article from feed and it is a favourite one`() {
+        testDispatcherRule.runTest {
+            // When
+            Mockito.`when`(
+                repository.isArticleFavourite(ArgumentMatchers.anyString())
+            ).thenReturn(1)
+
+            // Given
+            viewModel = getViewModelInstance(
+                SavedStateHandle().apply {
+                    set(Constants.ARG_ARTICLE, getArticle())
+                }
+            )
+
+            delay(1000)
+
+            // Then
+            assertThat(viewModel.isFavourite.value).isTrue()
+        }
     }
 
     private fun getViewModelInstance(savedStateHandle: SavedStateHandle): ArticleViewModel {
