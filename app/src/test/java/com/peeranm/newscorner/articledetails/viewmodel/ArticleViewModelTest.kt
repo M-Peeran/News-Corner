@@ -9,6 +9,7 @@ import com.peeranm.newscorner.favouritearticles.data.repository.FavouriteArticle
 import com.peeranm.newscorner.favouritearticles.usecase.DeleteFavArticleUseCase
 import com.peeranm.newscorner.favouritearticles.usecase.InsertFavArticleUseCase
 import com.peeranm.newscorner.favouritearticles.usecase.IsArticleFavouriteUseCase
+import com.peeranm.newscorner.utils.getArticle
 import com.peeranm.newscorner.utils.getFavArticle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
@@ -46,6 +47,18 @@ class ArticleViewModelTest {
         )
         // Then
         assertThat(viewModel.isFavourite.value).isTrue()
+    }
+
+    @Test
+    fun `received non-favourite article from previous screen`() {
+        // Given
+        viewModel = getViewModelInstance(
+            SavedStateHandle().apply {
+                set(Constants.ARG_ARTICLE, getArticle())
+            }
+        )
+        // Then
+        assertThat(viewModel.isFavourite.value).isFalse()
     }
 
     private fun getViewModelInstance(savedStateHandle: SavedStateHandle): ArticleViewModel {
