@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
-import com.peeranm.newscorner.articledetails.utils.TestDispatcherRule
+import com.peeranm.newscorner.utils.TestDispatcherRule
 import com.peeranm.newscorner.core.constants.Constants
 import com.peeranm.newscorner.favouritearticles.data.local.entity.FavArticle
 import com.peeranm.newscorner.favouritearticles.data.repository.FavouriteArticleRepository

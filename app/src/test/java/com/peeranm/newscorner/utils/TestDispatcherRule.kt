@@ -1,4 +1,4 @@
-package com.peeranm.newscorner.articledetails.utils
+package com.peeranm.newscorner.utils
 
 
 import kotlinx.coroutines.Dispatchers
