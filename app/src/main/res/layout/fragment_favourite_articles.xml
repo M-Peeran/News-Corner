@@ -15,23 +15,19 @@
         android:id="@+id/listFavouriteArticles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/textNoArticlesFound"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fontFamily="@font/inter_medium"
         android:gravity="center"
         android:text="@string/no_favourite_articles_found"
-        android:textColor="@color/black"
+        android:textColor="?android:textColorPrimary"
         android:textSize="@dimen/_12ssp"
         tools:visibility="gone" />
 </LinearLayout>
