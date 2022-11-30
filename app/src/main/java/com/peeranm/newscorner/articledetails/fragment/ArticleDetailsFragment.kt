@@ -1,21 +1,23 @@
 package com.peeranm.newscorner.articledetails.fragment
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.peeranm.newscorner.R
-import com.peeranm.newscorner.core.utils.collectWithLifecycle
-import com.peeranm.newscorner.core.utils.showToast
 import com.peeranm.newscorner.articledetails.viewmodel.ArticleViewModel
-import com.peeranm.newscorner.core.constants.Constants
+import com.peeranm.newscorner.core.utils.collectWithLifecycle
 import com.peeranm.newscorner.core.utils.setActionbarTitle
+import com.peeranm.newscorner.core.utils.showToast
 import com.peeranm.newscorner.databinding.FragmentArticleDetailsBinding
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class ArticleDetailsFragment : Fragment() {
@@ -42,51 +44,41 @@ class ArticleDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setActionbarTitle(R.string.article_headline, getSource())
-        binding.loadArticle()
+        setActionbarTitle(R.string.article_headline, viewModel.articleFrom)
         binding.handleOnFabFavouriteClick()
 
         collectWithLifecycle(viewModel.message) { message ->
             if (message.isNotEmpty()) showToast(message)
         }
-    }
 
-    private fun getSource(): String {
-        return if (args.isFavourite) args.source ?: Constants.SOURCE_UNKNOWN
-        else args.article?.source ?: Constants.SOURCE_UNKNOWN
-    }
-
-    private fun FragmentArticleDetailsBinding.toggleFabFavouriteArticle(hideNow: Boolean = false) {
-        fabFavouriteArticle.visibility = if (hideNow) View.GONE else View.VISIBLE
-    }
-
-    private fun FragmentArticleDetailsBinding.loadArticle() {
-        val article = args.article
-        val articleUrl = args.articleUrl
-        val isFavouriteArticle = args.isFavourite
-
-        when {
-            article != null -> {
-                webviewArticle.webViewClient = WebViewClient()
-                webviewArticle.loadUrl(article.url)
-                toggleFabFavouriteArticle(hideNow = false)
-            }
-            articleUrl.isNullOrEmpty() -> {
-                showToast("Article url is not found!")
-                toggleFabFavouriteArticle(hideNow = true)
-            }
-            isFavouriteArticle -> {
-                webviewArticle.webViewClient = WebViewClient()
-                webviewArticle.loadUrl(articleUrl)
-                toggleFabFavouriteArticle(hideNow = true)
-            }
+        collectWithLifecycle(viewModel.isFavourite) { isFavourite ->
+            binding.toggleFabFavouriteArticleColor(isFavourite)
         }
+
+        binding.loadArticle(viewModel.articleUrl)
+    }
+
+    private fun FragmentArticleDetailsBinding.loadArticle(url: String) {
+        if (url.isNotEmpty()) {
+            webviewArticle.webViewClient = WebViewClient()
+            webviewArticle.loadUrl(url)
+        }
+    }
+
+    private fun FragmentArticleDetailsBinding.toggleFabFavouriteArticleColor(isFavourite: Boolean = false) {
+        fabFavouriteArticle.setColorFilter(
+            if (isFavourite) {
+                ContextCompat.getColor(requireContext(), R.color.yellow)
+            } else TypedValue().let {
+                requireContext().theme.resolveAttribute(R.attr.colorOnSecondary, it, true)
+                it.data
+            }
+        )
     }
 
     private fun FragmentArticleDetailsBinding.handleOnFabFavouriteClick() {
         fabFavouriteArticle.setOnClickListener {
-            binding.toggleFabFavouriteArticle(true)
-            viewModel.saveArticle()
+            viewModel.saveOrDeleteArticle()
         }
     }
 

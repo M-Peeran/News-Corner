@@ -21,4 +21,7 @@ interface FavArticleDao {
 
     @Query("delete from table_favourite_articles where id =:id")
     suspend fun deleteFavArticleById(id: String)
+
+    @Query("select count(*) from table_favourite_articles where id =:id")
+    suspend fun isArticleFavourite(id: String): Int?
 }

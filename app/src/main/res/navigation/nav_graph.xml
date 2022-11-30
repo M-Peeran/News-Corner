@@ -35,24 +35,15 @@
         android:label="ArticleDetailsFragment"
         tools:layout="@layout/fragment_article_details">
         <argument
-            android:name="articleUrl"
-            android:defaultValue="@null"
-            app:argType="string"
-            app:nullable="true" />
-        <argument
-            android:name="isFavourite"
-            android:defaultValue="false"
-            app:argType="boolean" />
-        <argument
             android:name="article"
             android:defaultValue="@null"
             app:argType="com.peeranm.newscorner.newsfeed.model.Article"
             app:nullable="true" />
         <argument
-            android:name="source"
-            app:argType="string"
+            android:name="favArticle"
             app:nullable="true"
-            android:defaultValue="@null"/>
+            android:defaultValue="@null"
+            app:argType="com.peeranm.newscorner.favouritearticles.data.local.entity.FavArticle" />
     </fragment>
     <fragment
         android:id="@+id/favouriteArticlesFragment"

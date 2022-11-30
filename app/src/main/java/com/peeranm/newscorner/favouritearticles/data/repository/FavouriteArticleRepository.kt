@@ -8,4 +8,5 @@ interface FavouriteArticleRepository {
     suspend fun insertFavArticle(favArticle: FavArticle)
     suspend fun deleteFavArticleById(id: String)
     suspend fun getFavArticleById(id: String): FavArticle?
+    suspend fun isArticleFavourite(id: String): Int?
 }

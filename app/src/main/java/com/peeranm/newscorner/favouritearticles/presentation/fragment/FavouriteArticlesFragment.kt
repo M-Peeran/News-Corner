@@ -8,7 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.peeranm.newscorner.R
 import com.peeranm.newscorner.core.constants.Constants
 import com.peeranm.newscorner.core.utils.*
@@ -55,10 +58,7 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
         observeConnectionState()
 
         collectWithLifecycle(viewModel.favArticles) {
-            if (it.isEmpty()) {
-                binding.showNoArticlesFoundMessage()
-                return@collectWithLifecycle
-            }
+            binding.toggleNoArticlesFoundMessageVisibility(it.isEmpty())
             adapter?.submitList(it)
         }
 
@@ -70,10 +70,14 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
         }
     }
 
-    private fun FragmentFavouriteArticlesBinding.showNoArticlesFoundMessage() {
-        noConnectionLayout.root.visibility = View.GONE
-        listFavouriteArticles.visibility = View.GONE
-        textNoArticlesFound.visibility = View.VISIBLE
+    private fun FragmentFavouriteArticlesBinding.toggleNoArticlesFoundMessageVisibility(showNow: Boolean = true) {
+        if (showNow) {
+            listFavouriteArticles.visibility = View.GONE
+            textNoArticlesFound.visibility = View.VISIBLE
+        } else {
+            textNoArticlesFound.visibility = View.GONE
+            listFavouriteArticles.visibility = View.VISIBLE
+        }
     }
 
     private fun FragmentFavouriteArticlesBinding.toggleNoConnectionLayoutVisibility(showNow: Boolean = false) {
@@ -86,6 +90,7 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
         listFavouriteArticles.adapter = adapter
         listFavouriteArticles.layoutManager = layoutManager
         listFavouriteArticles.addItemDecoration(DividerItemDecoration(requireContext(), layoutManager.orientation))
+        ItemTouchHelper(itemTouchCallback).attachToRecyclerView(listFavouriteArticles)
     }
 
     override fun onItemClick(view: View?, data: FavArticle, position: Int) {
@@ -95,9 +100,7 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
         }
         findNavController().navigate(
             FavouriteArticlesFragmentDirections.actionFavouriteArticlesFragmentToArticleDetailsFragment(
-                articleUrl = data.url,
-                source = data.source,
-                isFavourite = true
+                favArticle = data
             )
         )
     }
@@ -107,5 +110,25 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
         adapter?.onClear()
         adapter = null
         _binding = null
+    }
+
+    private val itemTouchCallback = object : ItemTouchHelper.SimpleCallback(
+        0,
+        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ) {
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val favArticle = adapter?.getItem(viewHolder.absoluteAdapterPosition) ?: return
+            viewModel.removeFavArticle(favArticle.id)
+
+            Snackbar.make(binding.root, "Removed from favourites", Snackbar.LENGTH_SHORT)
+                .setAction("Undo") { viewModel.addFavouriteArticle(favArticle) }
+                .show()
+        }
+
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder,
+        ) = false
     }
 }

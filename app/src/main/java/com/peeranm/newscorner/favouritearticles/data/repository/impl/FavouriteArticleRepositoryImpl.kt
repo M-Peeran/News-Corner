@@ -23,4 +23,8 @@ class FavouriteArticleRepositoryImpl(private val database: NewsDatabase) : Favou
         return database.favArticlesDao().getFavArticleById(id)
     }
 
+    override suspend fun isArticleFavourite(id: String): Int? {
+        return database.favArticlesDao().isArticleFavourite(id)
+    }
+
 }

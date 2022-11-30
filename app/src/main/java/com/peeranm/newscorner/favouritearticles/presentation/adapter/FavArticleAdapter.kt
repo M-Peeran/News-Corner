@@ -69,6 +69,8 @@ class FavArticleAdapter(listener: OnItemClickListener<FavArticle>)
         dataDiffer.submitList(data)
     }
 
+    fun getItem(pos: Int): FavArticle? = dataDiffer.currentList[pos]
+
     fun onClear() {
         this.listener = null
     }
