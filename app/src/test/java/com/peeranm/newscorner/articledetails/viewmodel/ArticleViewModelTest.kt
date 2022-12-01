@@ -126,6 +126,30 @@ class ArticleViewModelTest {
     }
 
     @Test
+    fun `added given article to favourites`() {
+        testDispatcherRule.runTest {
+            // Given
+            Mockito.`when`(repository.insertFavArticle(getFavArticle())).thenReturn(Unit)
+
+            viewModel = getViewModelInstance(
+                SavedStateHandle().apply {
+                    set(Constants.ARG_ARTICLE, getArticle())
+                }
+            )
+
+            // When
+            viewModel.saveOrDeleteArticle()
+
+            // Then
+            viewModel.isFavourite.test {
+                assertThat(awaitItem()).isFalse()
+                assertThat(awaitItem()).isTrue()
+                Mockito.verify(repository, times(1)).insertFavArticle(getFavArticle())
+            }
+        }
+    }
+
+    @Test
     fun `no article found`() {
         // Given
         viewModel = getViewModelInstance(SavedStateHandle())
