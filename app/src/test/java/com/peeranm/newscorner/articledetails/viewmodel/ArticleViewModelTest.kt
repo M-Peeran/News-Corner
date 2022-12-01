@@ -2,6 +2,8 @@ package com.peeranm.newscorner.articledetails.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.test
+import app.cash.turbine.testIn
 import com.google.common.truth.Truth.assertThat
 import com.peeranm.newscorner.utils.TestDispatcherRule
 import com.peeranm.newscorner.core.constants.Constants
@@ -11,8 +13,7 @@ import com.peeranm.newscorner.favouritearticles.usecase.InsertFavArticleUseCase
 import com.peeranm.newscorner.favouritearticles.usecase.IsArticleFavouriteUseCase
 import com.peeranm.newscorner.utils.getArticle
 import com.peeranm.newscorner.utils.getFavArticle
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -42,26 +43,36 @@ class ArticleViewModelTest {
 
     @Test
     fun `received favourite article from previous screen`() {
-        // Given
-        viewModel = getViewModelInstance(
-            SavedStateHandle().apply {
-                set(Constants.ARG_FAV_ARTICLE, getFavArticle())
+        testDispatcherRule.runTest {
+            // Given
+            viewModel = getViewModelInstance(
+                SavedStateHandle().apply {
+                    set(Constants.ARG_FAV_ARTICLE, getFavArticle())
+                }
+            )
+
+            // Then
+            viewModel.isFavourite.test {
+                assertThat(awaitItem()).isTrue()
             }
-        )
-        // Then
-        assertThat(viewModel.isFavourite.value).isTrue()
+        }
     }
 
     @Test
     fun `received non-favourite article from previous screen`() {
-        // Given
-        viewModel = getViewModelInstance(
-            SavedStateHandle().apply {
-                set(Constants.ARG_ARTICLE, getArticle())
+        testDispatcherRule.runTest {
+            // Given
+            viewModel = getViewModelInstance(
+                SavedStateHandle().apply {
+                    set(Constants.ARG_ARTICLE, getArticle())
+                }
+            )
+
+            // Then
+            viewModel.isFavourite.test {
+                assertThat(awaitItem()).isFalse()
             }
-        )
-        // Then
-        assertThat(viewModel.isFavourite.value).isFalse()
+        }
     }
 
     @Test
