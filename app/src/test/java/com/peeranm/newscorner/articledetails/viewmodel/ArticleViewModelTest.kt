@@ -3,7 +3,6 @@ package com.peeranm.newscorner.articledetails.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
-import app.cash.turbine.testIn
 import com.google.common.truth.Truth.assertThat
 import com.peeranm.newscorner.utils.TestDispatcherRule
 import com.peeranm.newscorner.core.constants.Constants
@@ -21,6 +20,7 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
+import kotlin.time.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ArticleViewModelTest {
@@ -90,10 +90,11 @@ class ArticleViewModelTest {
                 }
             )
 
-            delay(1000)
-
             // Then
-            assertThat(viewModel.isFavourite.value).isTrue()
+            viewModel.isFavourite.test {
+                assertThat(awaitItem()).isFalse()
+                assertThat(awaitItem()).isTrue()
+            }
         }
     }
 
