@@ -19,6 +19,7 @@ import org.junit.Test
 import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito
+import org.mockito.Mockito.times
 import org.mockito.MockitoAnnotations
 import kotlin.time.*
 
@@ -94,6 +95,32 @@ class ArticleViewModelTest {
             viewModel.isFavourite.test {
                 assertThat(awaitItem()).isFalse()
                 assertThat(awaitItem()).isTrue()
+            }
+        }
+    }
+
+    @Test
+    fun `deleted the given favourite article`() {
+        testDispatcherRule.runTest {
+
+            // Given
+            Mockito.`when`(repository.deleteFavArticleById(ArgumentMatchers.anyString()))
+                .thenReturn(Unit)
+
+            viewModel = getViewModelInstance(
+                SavedStateHandle().apply {
+                    set(Constants.ARG_FAV_ARTICLE, getFavArticle())
+                }
+            )
+
+            // When
+            viewModel.saveOrDeleteArticle()
+
+            // Then
+            viewModel.isFavourite.test {
+                assertThat(awaitItem()).isTrue()
+                assertThat(awaitItem()).isFalse()
+                Mockito.verify(repository, times(1)).deleteFavArticleById(ArgumentMatchers.anyString())
             }
         }
     }
