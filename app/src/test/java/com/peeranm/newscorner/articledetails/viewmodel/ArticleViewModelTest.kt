@@ -86,6 +86,14 @@ class ArticleViewModelTest {
         }
     }
 
+    @Test
+    fun `no article found`() {
+        // Given
+        viewModel = getViewModelInstance(SavedStateHandle())
+        // Then
+        assertThat(viewModel.noArticleFound).isTrue()
+    }
+
     private fun getViewModelInstance(savedStateHandle: SavedStateHandle): ArticleViewModel {
         return ArticleViewModel(
             savedStateHandle,
