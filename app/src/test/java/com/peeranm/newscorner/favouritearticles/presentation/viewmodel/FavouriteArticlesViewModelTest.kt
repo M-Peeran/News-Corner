@@ -12,6 +12,7 @@ import com.peeranm.newscorner.favouritearticles.usecase.InsertFavArticleUseCase
 import com.peeranm.newscorner.utils.TestDispatcherRule
 import com.peeranm.newscorner.utils.getFavArticle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
@@ -93,8 +94,7 @@ class FavouriteArticlesViewModelTest {
             viewModel.getFavArticles()
 
             // Then
-            viewModel.favArticles.test {
-                assertThat(awaitItem()).isEmpty()
+            viewModel.favArticles.drop(1).test {
                 assertThat(awaitItem()).isNotEmpty()
                 Mockito.verify(repository, times(1)).getFavArticles()
             }
