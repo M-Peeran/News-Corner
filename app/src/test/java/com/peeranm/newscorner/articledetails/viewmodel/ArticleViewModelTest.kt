@@ -13,6 +13,7 @@ import com.peeranm.newscorner.favouritearticles.usecase.IsArticleFavouriteUseCas
 import com.peeranm.newscorner.utils.getArticle
 import com.peeranm.newscorner.utils.getFavArticle
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.drop
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -92,8 +93,7 @@ class ArticleViewModelTest {
             )
 
             // Then
-            viewModel.isFavourite.test {
-                assertThat(awaitItem()).isFalse()
+            viewModel.isFavourite.drop(1).test {
                 assertThat(awaitItem()).isTrue()
             }
         }
@@ -117,8 +117,7 @@ class ArticleViewModelTest {
             viewModel.saveOrDeleteArticle()
 
             // Then
-            viewModel.isFavourite.test {
-                assertThat(awaitItem()).isTrue()
+            viewModel.isFavourite.drop(1).test {
                 assertThat(awaitItem()).isFalse()
                 Mockito.verify(repository, times(1)).deleteFavArticleById(ArgumentMatchers.anyString())
             }
@@ -141,8 +140,7 @@ class ArticleViewModelTest {
             viewModel.saveOrDeleteArticle()
 
             // Then
-            viewModel.isFavourite.test {
-                assertThat(awaitItem()).isFalse()
+            viewModel.isFavourite.drop(1).test {
                 assertThat(awaitItem()).isTrue()
                 Mockito.verify(repository, times(1)).insertFavArticle(getFavArticle())
             }
