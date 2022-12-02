@@ -10,8 +10,10 @@ import com.peeranm.newscorner.favouritearticles.usecase.DeleteFavArticleUseCase
 import com.peeranm.newscorner.favouritearticles.usecase.GetFavArticlesUseCase
 import com.peeranm.newscorner.favouritearticles.usecase.InsertFavArticleUseCase
 import com.peeranm.newscorner.utils.TestDispatcherRule
+import com.peeranm.newscorner.utils.getFavArticle
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOf
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -76,6 +78,24 @@ class FavouriteArticlesViewModelTest {
             // Then
             viewModel.favArticles.test {
                 assertThat(awaitItem()).isEmpty()
+                Mockito.verify(repository, times(1)).getFavArticles()
+            }
+        }
+    }
+
+    @Test
+    fun `received favourite articles from cache`() {
+        testDispatcherRule.runTest {
+            // Given
+            Mockito.`when`(repository.getFavArticles()).thenReturn(flowOf(listOf(getFavArticle())))
+
+            // When
+            viewModel.getFavArticles()
+
+            // Then
+            viewModel.favArticles.test {
+                assertThat(awaitItem()).isEmpty()
+                assertThat(awaitItem()).isNotEmpty()
                 Mockito.verify(repository, times(1)).getFavArticles()
             }
         }
