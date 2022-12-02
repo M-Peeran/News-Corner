@@ -24,13 +24,19 @@ class FavouriteArticlesViewModel @Inject constructor(
     val connectionLiveData: ConnectionLiveData
     get() = _connectionLiveData
 
+    private val _favArticles = MutableStateFlow<List<FavArticle>>(emptyList())
+    val favArticles: StateFlow<List<FavArticle>> = _favArticles
+
     fun initializeConnectionLiveData(context: Context) {
         if (::_connectionLiveData.isInitialized) return
         _connectionLiveData = ConnectionLiveData(context)
     }
 
-    val favArticles: StateFlow<List<FavArticle>>
-    = getFavouriteArticles.invoke().stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    fun getFavArticles() {
+        getFavouriteArticles().onEach {
+            _favArticles.value = it
+        }.launchIn(viewModelScope)
+    }
 
     fun removeFavArticle(id: String) {
         viewModelScope.launch { deleteFavArticle(id) }
