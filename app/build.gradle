@@ -112,6 +112,21 @@ dependencies {
     // Unit test dependencies
     testImplementation 'junit:junit:4.13.2'
 
+    // Truth library
+    testImplementation "com.google.truth:truth:1.1.3"
+
+    // Mockito library
+    testImplementation "org.mockito:mockito-core:4.9.0"
+
+    // InstantTaskExecutorRule for unit testing
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    // Coroutines for testing
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4"
+
+    // Turbine for testing flow API
+    testImplementation "app.cash.turbine:turbine:0.12.1"
+
     // Instrumented test dependencies
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
