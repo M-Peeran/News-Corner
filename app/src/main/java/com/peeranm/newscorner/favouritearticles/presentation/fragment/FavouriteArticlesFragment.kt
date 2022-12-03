@@ -61,7 +61,7 @@ class FavouriteArticlesFragment : Fragment(), OnItemClickListener<FavArticle> {
             binding.toggleNoArticlesFoundMessageVisibility(it.isEmpty())
             adapter?.submitList(it)
         }
-
+        viewModel.getFavArticles()
     }
 
     private fun observeConnectionState() {
