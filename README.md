@@ -1,5 +1,9 @@
 # News Corner
-Get latest news!
+A news app that covers the latest news around the world. It has the following features :
+* Trending news around the world
+* News by category or country
+* Search news (supports infinite scrolling)
+* Favorite articles
 
 <img src="https://user-images.githubusercontent.com/43210721/204090362-7cd83bf5-19ff-4541-9898-44dcade4ee34.jpg" width="200" height="400" />
 <img src="https://user-images.githubusercontent.com/43210721/204090372-d677423b-8c5e-4101-b413-ccad33a00072.jpg" width="200" height="400" />
